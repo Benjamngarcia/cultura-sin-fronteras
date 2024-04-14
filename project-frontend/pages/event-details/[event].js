@@ -3,9 +3,11 @@ import { Box, Typography, Rating, Button } from "@mui/material";
 import { Person } from "@mui/icons-material";
 import RoomIcon from "@mui/icons-material/Room";
 import EventCard from "@/components/Cards/Event";
+import ReviewModal from "@/components/Forms/ReviewForms";
 import MapaConGoogleMaps from "@/components/common/Map";
 import { allEvents } from "@/data";
 import { useRouter } from "next/router";
+
 
 export default function EventDetails() {
   const router = useRouter();
@@ -15,7 +17,15 @@ export default function EventDetails() {
 
   const [showMap, setShowMap] = useState(false);
   const [address, setAddress] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "16px", p: 2 }}>
       <Typography variant="h4" gutterBottom>
@@ -29,17 +39,18 @@ export default function EventDetails() {
         }}
       >
         <Box
-          component="img"
-          height="200"
-          src={eventDetails.img}
-          alt={`Image ${eventDetails.name}`}
-          sx={{
-            width: "200px",
-            height: "200px",
-            objectFit: "cover",
-            borderRadius: "12px",
-          }}
-        />
+  component="img"
+  height="200"
+  src={eventDetails ? eventDetails.img : ''}
+  alt={`Image ${eventDetails ? eventDetails.name : ''}`}
+  sx={{
+    width: "200px",
+    height: "200px",
+    objectFit: "cover",
+    borderRadius: "12px",
+  }}
+/>
+
         <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           <Typography variant="h5">{eventDetails.name}</Typography>
           <Typography variant="subtitle1">
@@ -210,6 +221,13 @@ export default function EventDetails() {
           variant="h6"
           sx={{ marginTop: "16px", marginBottom: "16px" }}
         >
+
+        <Button variant="contained" color="primary" onClick={handleModalOpen}>
+        Deja un review
+      </Button>
+      <ReviewModal open={modalOpen} onClose={handleModalClose} />
+      <br></br>
+      <br></br>
           Highlighted events
         </Typography>
         <Box
@@ -236,6 +254,7 @@ export default function EventDetails() {
               msOverflowStyle: "none",
             }}
           >
+            
             {allEvents
               .filter((event) => event.isBoosted.valueOf() === true)
               .map((event) => (
@@ -254,4 +273,4 @@ export default function EventDetails() {
       </Box>
     </Box>
   );
-}
+} 
