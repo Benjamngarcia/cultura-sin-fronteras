@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Box,
@@ -14,13 +14,18 @@ import { Search, Person } from "@mui/icons-material";
 import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
 import Close from "@mui/icons-material/Close";
 import Link from "next/link";
-
+import LoginModal from "../auth/LoginModal";
 export function Nav() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false); // Estado para controlar la visibilidad del modal de login
   const navItems = [{ title: "Home", link: "/" }];
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const handleLoginModalToggle = () => {
+    setLoginModalOpen((prevOpen) => !prevOpen); // Cambia el estado del modal de login
   };
 
   const drawer = (
@@ -111,13 +116,6 @@ export function Nav() {
             gap: "8px",
           }}
         >
-          {/* {navItems.map((item) => (
-            <Typography key={item.title}>
-              <Link href={item.link} className="links-styles">
-                {item.title}
-              </Link>
-            </Typography>
-          ))} */}
           <TextField
             placeholder="Search my next travel..."
             variant="outlined"
@@ -125,7 +123,7 @@ export function Nav() {
               endAdornment: <Search />,
             }}
           />
-          <IconButton onClick={() => null}>
+          <IconButton onClick={handleLoginModalToggle}> {/* Abre el modal de login al hacer clic */}
             <Person />
           </IconButton>
         </Box>
@@ -160,6 +158,9 @@ export function Nav() {
           {drawer}
         </Drawer>
       </Box>
+
+      {/* Renderiza el modal de login */}
+      <LoginModal open={loginModalOpen} onClose={handleLoginModalToggle} />
     </>
   );
 }
