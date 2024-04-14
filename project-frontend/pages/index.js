@@ -2,7 +2,6 @@ import Head from 'next/head'
 import EventCard from '@/components/Cards/Event'
 
 import React, { useState } from 'react';
-import Head from 'next/head';
 import { Button } from '@mui/material';
 import ReviewModal from '@/components/forms/ReviewForms';
 import Link from 'next/link';
