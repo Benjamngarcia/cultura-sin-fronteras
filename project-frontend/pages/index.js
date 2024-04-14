@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import EventCard from '@/components/Cards/Event'
 
 export default function Home() {
   return (
@@ -9,7 +10,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>hola mundo</h1>
+      <EventCard
+        imageUrl="https://source.unsplash.com/345x140/?travel"
+        name="Viaje a la luna"
+        startDate="2022-12-12"
+        endDate="2022-12-13"
+        rating={4}
+        id={1}
+      />
     </>
   )
 }
