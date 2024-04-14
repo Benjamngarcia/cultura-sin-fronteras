@@ -1,9 +1,9 @@
-import Head from 'next/head'
-import EventCard from '@/components/Cards/Event'
-
-import React, { useState } from 'react';
-import { Button } from '@mui/material';
-import ReviewModal from '@/components/Forms/ReviewForms';
+import React, { useState } from "react";
+import Head from "next/head";
+import { Box, Typography } from "@mui/material";
+import EventCard from "@/components/Cards/Event";
+import ReviewModal from "@/components/Forms/ReviewForms";
+import { allEvents } from "@/data";
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -24,14 +24,87 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <EventCard
-        imageUrl="https://source.unsplash.com/345x140/?travel"
-        name="Viaje a la luna"
-        startDate="2022-12-12"
-        endDate="2022-12-13"
-        rating={4}
-        id={1}
-      />
+      <Typography variant="h6">Highlighted events</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          gap: "16px",
+          overflowX: "scroll",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
+        {allEvents
+          .filter((event) => event.isBoosted.valueOf() === true)
+          .map((event) => (
+            <EventCard
+              key={event.id}
+              imageUrl={event.img}
+              name={event.name}
+              startDate={event.dates}
+              endDate={event.endDate}
+              rating={event.scoreAvg}
+              id={event.id}
+            />
+          ))}
+      </Box>
+      <Typography variant="h6">Explore cultural events</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          gap: "16px",
+          overflowX: "scroll",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
+        {allEvents
+          .filter((event) => event.categories.includes("Culture"))
+          .map((event) => (
+            <EventCard
+              key={event.id}
+              imageUrl={event.img}
+              name={event.name}
+              startDate={event.dates}
+              endDate={event.endDate}
+              rating={event.scoreAvg}
+              id={event.id}
+            />
+          ))}
+      </Box>
+      <Typography variant="h6">Explore adventure</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          gap: "16px",
+          overflowX: "scroll",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
+        {allEvents
+          .filter((event) => event.categories.includes("Adventure"))
+          .map((event) => (
+            <EventCard
+              key={event.id}
+              imageUrl={event.img}
+              name={event.name}
+              startDate={event.dates}
+              endDate={event.endDate}
+              rating={event.scoreAvg}
+              id={event.id}
+            />
+          ))}
+      </Box>
       {/* <Button variant="contained" color="primary" onClick={handleModalOpen}>
         Deja un review
       </Button> */}

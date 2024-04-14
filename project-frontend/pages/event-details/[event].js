@@ -4,58 +4,14 @@ import { Person } from "@mui/icons-material";
 import RoomIcon from "@mui/icons-material/Room";
 import EventCard from "@/components/Cards/Event";
 import MapaConGoogleMaps from "@/components/common/Map";
+import { allEvents } from "@/data";
+import { useRouter } from "next/router";
 
 export default function EventDetails() {
-  const eventDetails = {
-    img: "https://source.unsplash.com/345x140/?travel",
-    name: "Travel to the Moon",
-    scoreAvg: 4.5,
-    reviewCount: 150,
-    categories: ["Espacio", "Ciencia", "Aventura"],
-    dates: "23rd April 2024 - 26th April 2024",
-    description:
-      "Join us for a spectacular journey to the moon. This once-in-a-lifetime experience...",
-    creator: {
-      name: "Lunar Adventures",
-      eventCount: 5,
-    },
-    address: {
-      street: "Rocket Road",
-      number: "1",
-      colony: "SpaceX Facility",
-      municipality: "Brownsville",
-      city: "Boca Chica",
-      state: "Texas",
-      longitude: -99.1332049,
-      latitude: 19.4326018,
-    },
-    comments: [
-      { name: "Alice", rating: 5, comment: "Unbelievable experience!" },
-      {
-        name: "Bob",
-        rating: 4,
-        comment: "Absolutely amazing, but a bit pricey.",
-      },
-      { name: "Alice", rating: 5, comment: "Unbelievable experience!" },
-      {
-        name: "Bob",
-        rating: 4,
-        comment: "Absolutely amazing, but a bit pricey.",
-      },
-      { name: "Alice", rating: 5, comment: "Unbelievable experience!" },
-      {
-        name: "Bob",
-        rating: 4,
-        comment: "Absolutely amazing, but a bit pricey.",
-      },
-      { name: "Alice", rating: 5, comment: "Unbelievable experience!" },
-      {
-        name: "Bob",
-        rating: 4,
-        comment: "Absolutely amazing, but a bit pricey.",
-      },
-    ],
-  };
+  const router = useRouter();
+  const { event } = router.query;
+  const eventID = parseInt(event);
+  const eventDetails = allEvents.find((event) => event.id === eventID);
 
   const [showMap, setShowMap] = useState(false);
   const [address, setAddress] = useState("");
@@ -238,7 +194,12 @@ export default function EventDetails() {
               <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <Person />
                 <Typography variant="subtitle1">{comment.name}</Typography>
-                <Rating name="read-only" value={comment.rating} readOnly />
+                <Rating
+                  name="half-rating-read"
+                  value={comment.rating}
+                  readOnly
+                  precision={0.5}
+                />
               </Box>
               <Typography variant="subtitle2">23 april 2023</Typography>
               <Typography variant="body1">{comment.comment}</Typography>
@@ -263,17 +224,32 @@ export default function EventDetails() {
             msOverflowStyle: "none",
           }}
         >
-          {[...Array(10)].map((_, index) => (
-            <EventCard
-              key={index}
-              imageUrl="https://source.unsplash.com/345x140/?travel"
-              name="Viaje a la luna"
-              startDate="2022-12-12"
-              endDate="2022-12-13"
-              rating={4}
-              id={index} // Asumiendo que el id puede ser el índice en este contexto ficticio
-            />
-          ))}
+          <Box
+            sx={{
+              display: "flex",
+              gap: "16px",
+              overflowX: "scroll",
+              "&::-webkit-scrollbar": {
+                display: "none",
+              },
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
+          >
+            {allEvents
+              .filter((event) => event.isBoosted.valueOf() === true)
+              .map((event) => (
+                <EventCard
+                  key={event.id}
+                  imageUrl={event.img}
+                  name={event.name}
+                  startDate={event.dates}
+                  endDate={event.endDate}
+                  rating={event.scoreAvg}
+                  id={event.id}
+                />
+              ))}
+          </Box>
         </Box>
       </Box>
     </Box>
