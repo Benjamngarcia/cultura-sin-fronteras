@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import { Button } from '@mui/material';
 import ReviewModal from '@/components/forms/ReviewForms';
+import Link from 'next/link';
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -25,6 +26,7 @@ export default function Home() {
       <Button variant="contained" color="primary" onClick={handleModalOpen}>
         Deja un review
       </Button>
+      <Link href="/scan-ticket">Mapa</Link>
       <ReviewModal open={modalOpen} onClose={handleModalClose} /> {/* Renderiza el modal */}
     </>
   );
