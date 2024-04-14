@@ -15,18 +15,26 @@ import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
 import Close from "@mui/icons-material/Close";
 import Link from "next/link";
 import LoginModal from "../Forms/AuthForm";
+import { useRouter } from "next/router";
 
 export function Nav() {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const navItems = [{ title: "Home", link: "/" }];
+  const router = useRouter();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
   const handleLoginModalToggle = () => {
-    setLoginModalOpen((prevOpen) => !prevOpen); // Cambia el estado del modal de login
+    const session = localStorage.getItem("userSession");
+    if (session) {
+      const user = JSON.parse(session);
+      router.push(`/profile-details/${user.id}`);
+    } else {
+      setLoginModalOpen((prevOpen) => !prevOpen);
+    }
   };
 
   const drawer = (
@@ -46,7 +54,7 @@ export function Nav() {
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <Typography color="primary" sx={{ fontWeight: "bold" }}>
-              Dictamigos
+              Cultura sin fronteras
             </Typography>
           </Box>
         </Link>
@@ -124,7 +132,7 @@ export function Nav() {
               endAdornment: <Search />,
             }}
           />
-          <IconButton onClick={handleLoginModalToggle}> {/* Abre el modal de login al hacer clic */}
+          <IconButton onClick={handleLoginModalToggle}>
             <Person />
           </IconButton>
         </Box>
@@ -159,8 +167,6 @@ export function Nav() {
           {drawer}
         </Drawer>
       </Box>
-
-      {/* Renderiza el modal de login */}
       <LoginModal open={loginModalOpen} onClose={handleLoginModalToggle} />
     </>
   );

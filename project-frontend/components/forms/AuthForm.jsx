@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { Modal, Button, TextField, Typography } from '@mui/material';
+import React, { useState } from "react";
+import { Modal, Button, TextField, Typography } from "@mui/material";
+import { allUsers } from "@/data";
 
 const LoginModal = ({ open, onClose }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [creatingAccount, setCreatingAccount] = useState(false); // Estado para controlar la creación de cuenta
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [creatingAccount, setCreatingAccount] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -30,44 +32,53 @@ const LoginModal = ({ open, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setErrorMessage("");
 
     if (creatingAccount) {
-      // Aquí podrías hacer la petición a tu API para crear una cuenta
-      // Por simplicidad, este ejemplo solo muestra los datos en la consola
-      console.log('Creating Account...');
-      console.log('First Name:', firstName);
-      console.log('Last Name:', lastName);
-      console.log('Email:', email);
-      console.log('Password:', password);
+      console.log("Creating Account...");
+      console.log("First Name:", firstName);
+      console.log("Last Name:", lastName);
+      console.log("Email:", email);
+      console.log("Password:", password);
     } else {
-      // Aquí podrías hacer la petición a tu API para autenticar al usuario
-      // Por simplicidad, este ejemplo solo muestra los datos en la consola
-      console.log('Email:', email);
-      console.log('Password:', password);
+      const user = allUsers.find(
+        (user) => user.email === email && user.password === password
+      );
+      if (user) {
+        localStorage.setItem(
+          "userSession",
+          JSON.stringify({
+            id: user.id,
+            name: `${user.firstName} ${user.lastName}`,
+          })
+        );
+        console.log("Logged in successfully!");
+      } else {
+        console.log("Failed to log in: Incorrect email or password.");
+        setErrorMessage("Incorrect email or password.");
+      }
     }
-
-    // Cierra el modal después de enviar los datos
     onClose();
   };
 
   const modalStyle = {
-    position: 'absolute',
+    position: "absolute",
     width: 400,
-    backgroundColor: 'white',
-    border: '2px solid #000',
-    boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',
-    padding: '20px',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    backgroundColor: "white",
+    border: "2px solid #000",
+    boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)",
+    padding: "20px",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
   };
 
   const textFieldStyle = {
-    marginBottom: '16px',
+    marginBottom: "16px",
   };
 
   const buttonStyle = {
-    marginTop: '16px',
+    marginTop: "16px",
   };
 
   return (
@@ -79,8 +90,9 @@ const LoginModal = ({ open, onClose }) => {
     >
       <div style={modalStyle}>
         <Typography variant="h6" component="h2" id="login-modal-title">
-          {creatingAccount ? 'Create Account' : 'Login'}
+          {creatingAccount ? "Create Account" : "Login"}
         </Typography>
+        {errorMessage && <Typography color="error">{errorMessage}</Typography>}
         <form onSubmit={handleSubmit}>
           {creatingAccount && (
             <>
@@ -129,15 +141,15 @@ const LoginModal = ({ open, onClose }) => {
             color="primary"
             style={buttonStyle}
           >
-            {creatingAccount ? 'Create Account' : 'Login'}
+            {creatingAccount ? "Create Account" : "Login"}
           </Button>
         </form>
         <Typography variant="body2">
           {creatingAccount
-            ? 'Already have an account?'
+            ? "Already have an account?"
             : "Don't have an account?"}
           <Button onClick={() => setCreatingAccount(!creatingAccount)}>
-            {creatingAccount ? 'Login' : 'Create Account'}
+            {creatingAccount ? "Login" : "Create Account"}
           </Button>
         </Typography>
       </div>
