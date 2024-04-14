@@ -1,6 +1,18 @@
-import Head from 'next/head'
-
+import React, { useState } from 'react';
+import Head from 'next/head';
+import { Button } from '@mui/material';
+import ReviewModal from '@/components/forms/ReviewForms';
 export default function Home() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+
   return (
     <>
       <Head>
@@ -9,7 +21,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>hola mundo</h1>
+      <h1>¡Hola mundo!</h1>
+      <Button variant="contained" color="primary" onClick={handleModalOpen}>
+        Deja un review
+      </Button>
+      <ReviewModal open={modalOpen} onClose={handleModalClose} /> {/* Renderiza el modal */}
     </>
-  )
+  );
 }
