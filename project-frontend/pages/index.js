@@ -1,3 +1,6 @@
+import Head from 'next/head'
+import EventCard from '@/components/Cards/Event'
+
 import React, { useState } from 'react';
 import Head from 'next/head';
 import { Button } from '@mui/material';
@@ -22,6 +25,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <EventCard
+        imageUrl="https://source.unsplash.com/345x140/?travel"
+        name="Viaje a la luna"
+        startDate="2022-12-12"
+        endDate="2022-12-13"
+        rating={4}
+        id={1}
+      />
       <h1>¡Hola mundo!</h1>
       <Button variant="contained" color="primary" onClick={handleModalOpen}>
         Deja un review
