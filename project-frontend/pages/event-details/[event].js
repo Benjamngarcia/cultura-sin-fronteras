@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography, Rating, Button } from "@mui/material";
 import { Person } from "@mui/icons-material";
 import RoomIcon from "@mui/icons-material/Room";
 import EventCard from "@/components/Cards/Event";
+import MapaConGoogleMaps from "@/components/common/Map";
 
 export default function EventDetails() {
   const eventDetails = {
@@ -25,8 +26,8 @@ export default function EventDetails() {
       municipality: "Brownsville",
       city: "Boca Chica",
       state: "Texas",
-      longitude: "-97.1464",
-      latitude: "25.9973",
+      longitude: -99.1332049,
+      latitude: 19.4326018,
     },
     comments: [
       { name: "Alice", rating: 5, comment: "Unbelievable experience!" },
@@ -56,6 +57,9 @@ export default function EventDetails() {
     ],
   };
 
+  const [showMap, setShowMap] = useState(false);
+  const [address, setAddress] = useState("");
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "16px", p: 2 }}>
       <Typography variant="h4" gutterBottom>
@@ -72,7 +76,7 @@ export default function EventDetails() {
           component="img"
           height="200"
           src={eventDetails.img}
-          alt={`Imagen de ${eventDetails.name}`}
+          alt={`Image ${eventDetails.name}`}
           sx={{
             width: "200px",
             height: "200px",
@@ -131,7 +135,7 @@ export default function EventDetails() {
               {eventDetails.creator.name}
             </Typography>
             <Typography variant="subtitle2" sx={{ color: "gray" }}>
-              {eventDetails.creator.eventCount} eventos organizados
+              {eventDetails.creator.eventCount} events created
             </Typography>
           </Box>
         </Box>
@@ -142,7 +146,7 @@ export default function EventDetails() {
           sx={{
             display: "flex",
             gap: "16px",
-            alignItems: "center",
+            alignItems: showMap ? "flex-start" : "center",
             width: "fit-content",
           }}
         >
@@ -159,16 +163,22 @@ export default function EventDetails() {
             <RoomIcon />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <Typography variant="subtitle1">
-              {`${eventDetails.address.street} ${eventDetails.address.number}, ${eventDetails.address.colony}, ${eventDetails.address.municipality}, ${eventDetails.address.city}, ${eventDetails.address.state}`}
-            </Typography>
+            <Typography variant="subtitle1">{address}</Typography>
             <Button
               variant="text"
               color="primary"
               sx={{ width: "fit-content" }}
+              onClick={() => setShowMap(!showMap)}
             >
               Show map
             </Button>
+            <Box sx={{ display: showMap ? "block" : "none" }}>
+              <MapaConGoogleMaps
+                latProp={eventDetails.address.latitude}
+                lngProp={eventDetails.address.longitude}
+                setAddress={setAddress}
+              />
+            </Box>
           </Box>
         </Box>
         {/* <Typography variant="body1">
@@ -250,7 +260,7 @@ export default function EventDetails() {
               display: "none",
             },
             scrollbarWidth: "none",
-            msOverflowStyle: "none", 
+            msOverflowStyle: "none",
           }}
         >
           {[...Array(10)].map((_, index) => (

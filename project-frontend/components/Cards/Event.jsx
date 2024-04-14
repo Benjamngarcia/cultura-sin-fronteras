@@ -33,10 +33,10 @@ function EventCard(props) {
             {name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Fecha de inicio: {startDate}
+            Start date: {startDate}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Fecha de fin: {endDate}
+            End date: {endDate}
           </Typography>
           <Rating name="read-only" value={rating} readOnly />
         </CardContent>

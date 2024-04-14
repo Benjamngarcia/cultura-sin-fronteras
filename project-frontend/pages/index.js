@@ -3,8 +3,8 @@ import EventCard from '@/components/Cards/Event'
 
 import React, { useState } from 'react';
 import { Button } from '@mui/material';
-import ReviewModal from '@/components/forms/ReviewForms';
-import Link from 'next/link';
+import ReviewModal from '@/components/Forms/ReviewForms';
+
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -32,12 +32,10 @@ export default function Home() {
         rating={4}
         id={1}
       />
-      <h1>¡Hola mundo!</h1>
-      <Button variant="contained" color="primary" onClick={handleModalOpen}>
+      {/* <Button variant="contained" color="primary" onClick={handleModalOpen}>
         Deja un review
-      </Button>
-      <Link href="/scan-ticket">Mapa</Link>
-      <ReviewModal open={modalOpen} onClose={handleModalClose} /> {/* Renderiza el modal */}
+      </Button> */}
+      <ReviewModal open={modalOpen} onClose={handleModalClose} />
     </>
   );
 }
